@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (!user) return;
-    const newSocket = io(process.env.REACT_APP_SERVER_URL || 'http://localhost:5000', {
+    const newSocket = io(process.env.REACT_APP_SERVER_URL || 'http://https://restrauntos-2.onrender.com', {
       transports: ['websocket']
     });
     newSocket.on('connect', () => {
@@ -27,5 +27,5 @@ export const SocketProvider = ({ children }) => {
     </SocketContext.Provider>
   );
 };
-
+ 
 export const useSocket = () => useContext(SocketContext);

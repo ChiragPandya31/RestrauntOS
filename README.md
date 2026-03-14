@@ -113,7 +113,8 @@ restaurant-system/
 ## 🚀 Local Setup Instructions
 
 ### Prerequisites
-- Node.js v18+ 
+
+- Node.js v18+
 - MongoDB (local or MongoDB Atlas free tier)
 - npm or yarn
 
@@ -133,11 +134,13 @@ npm install
 ```
 
 Create `.env` file:
+
 ```bash
 cp .env.example .env
 ```
 
 Edit `.env`:
+
 ```
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/restaurant_db
@@ -156,6 +159,7 @@ npm run seed
 ```
 
 This creates:
+
 - 3 users (admin, waiter, kitchen)
 - 4 menu categories
 - 15 menu items
@@ -167,7 +171,7 @@ This creates:
 npm run dev
 ```
 
-Backend runs on: `http://localhost:5000`
+Backend runs on: `http://https://restrauntos-2.onrender.com`
 
 ---
 
@@ -192,35 +196,37 @@ Frontend runs on: `http://localhost:3000`
 
 ## 🔑 Demo Login Credentials
 
-| Role    | Email                      | Password    |
-|---------|----------------------------|-------------|
-| Admin   | admin@restaurant.com       | admin123    |
-| Waiter  | waiter@restaurant.com      | waiter123   |
-| Kitchen | kitchen@restaurant.com     | kitchen123  |
+| Role    | Email                  | Password   |
+| ------- | ---------------------- | ---------- |
+| Admin   | admin@restaurant.com   | admin123   |
+| Waiter  | waiter@restaurant.com  | waiter123  |
+| Kitchen | kitchen@restaurant.com | kitchen123 |
 
 ---
 
 ## 🔌 Socket.IO Events
 
-| Event               | Direction           | Description                              |
-|---------------------|---------------------|------------------------------------------|
-| `orderPlaced`       | Server → Kitchen    | New order arrives in kitchen             |
-| `orderPreparing`    | Server → Waiter     | Kitchen started preparing                |
-| `orderReady`        | Server → Waiter     | All items ready, notify waiter           |
-| `tableUpdated`      | Server → All        | Table status changed                     |
-| `orderStatusUpdated`| Server → All        | Any order status update                  |
+| Event                | Direction        | Description                    |
+| -------------------- | ---------------- | ------------------------------ |
+| `orderPlaced`        | Server → Kitchen | New order arrives in kitchen   |
+| `orderPreparing`     | Server → Waiter  | Kitchen started preparing      |
+| `orderReady`         | Server → Waiter  | All items ready, notify waiter |
+| `tableUpdated`       | Server → All     | Table status changed           |
+| `orderStatusUpdated` | Server → All     | Any order status update        |
 
 ---
 
 ## 🛡️ API Endpoints
 
 ### Auth
+
 ```
 POST   /api/auth/login          Public
 GET    /api/auth/me             Protected
 ```
 
 ### Users (Admin only)
+
 ```
 GET    /api/users
 POST   /api/users
@@ -229,6 +235,7 @@ DELETE /api/users/:id
 ```
 
 ### Menu
+
 ```
 GET    /api/categories          All roles
 POST   /api/categories          Admin
@@ -242,6 +249,7 @@ DELETE /api/menu/:id            Admin
 ```
 
 ### Tables
+
 ```
 GET    /api/tables              All roles
 POST   /api/tables              Admin
@@ -250,6 +258,7 @@ DELETE /api/tables/:id          Admin
 ```
 
 ### Orders
+
 ```
 POST   /api/orders              Waiter, Admin
 GET    /api/orders              All roles
@@ -262,13 +271,13 @@ GET    /api/orders/analytics/category-sales Admin
 
 ## 🎨 UI Color System
 
-| Color  | Meaning          |
-|--------|------------------|
-| 🟢 Green  | Available / Served  |
-| 🟡 Yellow | Occupied            |
-| 🔴 Red    | Preparing / Urgent  |
-| 🔵 Blue   | Ready to Serve      |
-| ⚪ Gray   | Pending / Default   |
+| Color     | Meaning            |
+| --------- | ------------------ |
+| 🟢 Green  | Available / Served |
+| 🟡 Yellow | Occupied           |
+| 🔴 Red    | Preparing / Urgent |
+| 🔵 Blue   | Ready to Serve     |
+| ⚪ Gray   | Pending / Default  |
 
 ---
 
