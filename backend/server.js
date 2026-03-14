@@ -32,15 +32,15 @@ app.set('io', io);
 connectDB();
 
 // Middleware
-const cors = require("cors");
-
 app.use(cors({
   origin: [
     "http://localhost:3000",
     "https://restraunt-os.vercel.app"
   ],
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   credentials: true
-}));;
+}));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
