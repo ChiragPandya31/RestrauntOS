@@ -1,0 +1,96 @@
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import {
+  LayoutDashboard,
+  Users,
+  ClipboardList,
+  Utensils,
+  Table,
+  BarChart3,
+  LogOut,
+  ChefHat,
+} from "lucide-react";
+import Swal from "sweetalert2";
+
+const navItems = [
+  {
+    path: "/admin",
+    label: "Dashboard",
+    icon: <LayoutDashboard size={20} />,
+    end: true,
+  },
+  { path: "/admin/users", label: "Users", icon: <Users size={20} /> },
+  {
+    path: "/admin/categories",
+    label: "Categories",
+    icon: <ClipboardList size={20} />,
+  },
+  { path: "/admin/menu", label: "Menu Items", icon: <Utensils size={20} /> },
+  { path: "/admin/tables", label: "Tables", icon: <Table size={20} /> },
+  {
+    path: "/admin/orders",
+    label: "Order History",
+    icon: <ClipboardList size={20} />,
+  },
+  { path: "/admin/reports", label: "Reports", icon: <BarChart3 size={20} /> },
+];
+
+const Sidebar = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Sign Out",
+      text: "Are you sure you want to sign out?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#2563eb",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, sign out",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        navigate("/login");
+      }
+    });
+  };
+
+  return (
+    <div className="w-64 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col fixed left-0 top-0 z-40 transition-colors">
+      {/* Logo */}
+      <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+          <ChefHat size={24} />
+          <h1 className="text-[20px] font-semibold">RestaurantOS</h1>
+        </div>
+        <p className="text-[12px] font-normal text-gray-500 dark:text-gray-400 mt-1">Management System</p>
+      </div>
+
+
+      {/* Navigation */}
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.end}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-all ${
+                isActive
+                  ? "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 shadow-sm"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`
+            }
+          >
+            {item.icon}
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
+
+    </div>
+  );
+};
+
+export default Sidebar;
