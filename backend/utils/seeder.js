@@ -64,10 +64,10 @@ const seed = async () => {
     { tableNumber: 8, capacity: 8 }
   ]);
 
-  console.log('✅ Database seeded successfully!');
-  console.log('📧 Admin: admin@admin.com / admin123');
-  console.log('📧 Waiter: waiter@waiter.com / waiter123');
-  console.log('📧 Kitchen: kitchen@kitchen.com / kitchen123');
+  console.log('Database seeded successfully!');
+  console.log('Admin: admin@admin.com / admin123');
+  console.log('Waiter: waiter@waiter.com / waiter123');
+  console.log('Kitchen: kitchen@kitchen.com / kitchen123');
   process.exit(0);
 };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../../services/api";
 import {
@@ -13,6 +13,15 @@ import {
   DollarSign
 } from "lucide-react";
 import PageHeader from "../../components/common/PageHeader";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 const statusBadge = (status) => {
   const map = {
@@ -40,21 +49,25 @@ const OrderHistory = () => {
     setSearchParams(params, { replace: true });
   }, [filter, setSearchParams]);
 
-  const fetch = async () => {
+  const fetch = useCallback(async () => {
     try {
       const url = filter ? `/orders?status=${filter}` : "/orders";
       const { data } = await api.get(url);
       setOrders(data.data);
     } catch (e) {
       console.error(e);
+      Toast.fire({
+        icon: 'error',
+        title: 'Failed to fetch orders'
+      });
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
 
   useEffect(() => {
     fetch();
-  }, [filter]);
+  }, [fetch]);
 
   const updateStatus = async (orderId, status) => {
     setUpdating(orderId);

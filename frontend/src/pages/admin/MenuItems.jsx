@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../../services/api";
 import Swal from "sweetalert2";
@@ -11,6 +11,7 @@ const defaultForm = {
   price: "",
   availability: true,
   description: "",
+  image: "",
 };
 
 const MenuItems = () => {
@@ -34,7 +35,7 @@ const MenuItems = () => {
     setSearchParams(params, { replace: true });
   }, [filterCat, searchQuery, setSearchParams]);
 
-  const fetchAll = async () => {
+  const fetchAll = useCallback(async () => {
     try {
       const [itemsRes, catRes] = await Promise.all([
         api.get("/menu" + (filterCat ? `?category=${filterCat}` : "")),
@@ -47,11 +48,11 @@ const MenuItems = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterCat]);
 
   useEffect(() => {
     fetchAll();
-  }, [filterCat]);
+  }, [fetchAll]);
 
   const openModal = (item = null) => {
     setSelected(item);
@@ -63,6 +64,7 @@ const MenuItems = () => {
             price: item.price,
             availability: item.availability,
             description: item.description || "",
+            image: item.image || "",
           }
         : defaultForm,
     );
@@ -352,6 +354,18 @@ const MenuItems = () => {
                   placeholder="0.00"
                   value={form.price}
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="label text-gray-900 dark:text-gray-400 text-[12px] font-normal">
+                  Image URL
+                </label>
+                <input
+                  type="url"
+                  className="input-field mt-1 text-[14px]"
+                  placeholder="https://example.com/image.jpg"
+                  value={form.image}
+                  onChange={(e) => setForm({ ...form, image: e.target.value })}
                 />
               </div>
               <div>

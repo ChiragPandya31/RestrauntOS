@@ -3,6 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { AlertTriangle, LogIn, Lock, Mail, ChefHat } from "lucide-react";
 import ThemeToggle from "../components/common/ThemeToggle";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 const LoginPage = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -17,6 +26,10 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const user = await login(form.email, form.password);
+      Toast.fire({
+        icon: 'success',
+        title: 'Logged in successfully'
+      });
       const redirects = {
         admin: "/admin",
         waiter: "/waiter",
@@ -24,9 +37,12 @@ const LoginPage = () => {
       };
       navigate(redirects[user.role] || "/");
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Login failed. Please try again.",
-      );
+      const msg = err.response?.data?.message || "Login failed. Please try again.";
+      setError(msg);
+      Toast.fire({
+        icon: 'error',
+        title: msg
+      });
     } finally {
       setLoading(false);
     }

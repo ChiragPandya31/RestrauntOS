@@ -3,6 +3,15 @@ import { useSocket } from "../../context/SocketContext";
 import api from "../../services/api";
 import { ChefHat, CheckCircle, Play } from "lucide-react";
 import PageHeader from "../../components/common/PageHeader";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 const KitchenDashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -12,10 +21,12 @@ const KitchenDashboard = () => {
 
   const fetchOrders = useCallback(async () => {
     try {
-      const { data } = await api.get("/orders?status=pending");
-      const preparing = await api.get("/orders?status=preparing");
-      const partial = await api.get("/orders?status=partially_ready");
-      const all = [...data.data, ...preparing.data.data, ...partial.data.data];
+      const [pendingRes, preparingRes, partialRes] = await Promise.all([
+        api.get("/orders?status=pending"),
+        api.get("/orders?status=preparing"),
+        api.get("/orders?status=partially_ready")
+      ]);
+      const all = [...pendingRes.data.data, ...preparingRes.data.data, ...partialRes.data.data];
       // Deduplicate
       const unique = all.filter(
         (o, i, self) => self.findIndex((x) => x._id === o._id) === i,
@@ -25,6 +36,10 @@ const KitchenDashboard = () => {
       );
     } catch (e) {
       console.error(e);
+      Toast.fire({
+        icon: 'error',
+        title: 'Failed to fetch orders'
+      });
     } finally {
       setLoading(false);
     }
@@ -65,6 +80,10 @@ const KitchenDashboard = () => {
       await fetchOrders();
     } catch (e) {
       console.error(e);
+      Toast.fire({
+        icon: 'error',
+        title: 'Failed to update status'
+      });
     } finally {
       setUpdating(null);
     }

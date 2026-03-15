@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import api from "../../services/api";
 import {
   LayoutDashboard,
@@ -12,8 +12,17 @@ import {
   Clock,
 } from "lucide-react";
 import PageHeader from "../../components/common/PageHeader";
+import Swal from "sweetalert2";
 
-const StatCard = ({ icon, label, value, sub, color = "amber" }) => {
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
+
+const StatCard = React.memo(({ icon, label, value, sub, color = "amber" }) => {
   const colors = {
     amber: "border-amber-500/20 bg-amber-500/5 text-amber-600 dark:text-amber-400",
     green: "border-green-500/20 bg-green-500/5 text-green-600 dark:text-green-400",
@@ -33,32 +42,37 @@ const StatCard = ({ icon, label, value, sub, color = "amber" }) => {
       </div>
     </div>
   );
-};
+});
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchData = useCallback(async () => {
+    try {
+      const [statsRes, ordersRes] = await Promise.all([
+        api.get("/orders/analytics/summary"),
+        api.get("/orders?limit=10"),
+      ]);
+      setStats(statsRes.data.data);
+      setRecentOrders(ordersRes.data.data);
+    } catch (err) {
+      console.error("Dashboard error:", err);
+      Toast.fire({
+        icon: 'error',
+        title: 'Failed to load dashboard data'
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [statsRes, ordersRes] = await Promise.all([
-          api.get("/orders/analytics/summary"),
-          api.get("/orders?limit=10"),
-        ]);
-        setStats(statsRes.data.data);
-        setRecentOrders(ordersRes.data.data);
-      } catch (err) {
-        console.error("Dashboard error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
     const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchData]);
 
   if (loading) {
     return (

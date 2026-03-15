@@ -9,6 +9,7 @@ import {
   BarChart3,
   LogOut,
   ChefHat,
+  X
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -35,7 +36,7 @@ const navItems = [
   { path: "/admin/reports", label: "Reports", icon: <BarChart3 size={20} /> },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, closeSidebar }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -57,16 +58,29 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col fixed left-0 top-0 z-40 transition-colors">
+    <div className={`
+      w-64 min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 
+      flex flex-col fixed left-0 top-0 z-40 transition-transform duration-300 ease-in-out
+      ${isOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}
+      md:translate-x-0 md:shadow-none
+    `}>
       {/* Logo */}
-      <div className="p-6 border-b border-gray-200 dark:border-gray-800">
-        <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-          <ChefHat size={24} />
-          <h1 className="text-[20px] font-semibold">RestaurantOS</h1>
+      <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+            <ChefHat size={24} />
+            <h1 className="text-[20px] font-semibold">RestaurantOS</h1>
+          </div>
+          <p className="text-[12px] font-normal text-gray-500 dark:text-gray-400 mt-1">Management System</p>
         </div>
-        <p className="text-[12px] font-normal text-gray-500 dark:text-gray-400 mt-1">Management System</p>
+        <button 
+          onClick={closeSidebar}
+          className="md:hidden p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500"
+          aria-label="Close Sidebar"
+        >
+          <X size={20} />
+        </button>
       </div>
-
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -75,6 +89,11 @@ const Sidebar = () => {
             key={item.path}
             to={item.path}
             end={item.end}
+            onClick={() => {
+              if (window.innerWidth < 768) {
+                closeSidebar();
+              }
+            }}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-all ${
                 isActive

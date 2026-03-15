@@ -1,8 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import api from "../../services/api";
 import Swal from "sweetalert2";
 import { LayoutGrid, Plus, Edit, Trash, Users } from "lucide-react";
 import PageHeader from "../../components/common/PageHeader";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 const TableManagementAdmin = () => {
   const [tables, setTables] = useState([]);
@@ -13,20 +21,24 @@ const TableManagementAdmin = () => {
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const fetch = async () => {
+  const fetch = useCallback(async () => {
     try {
       const { data } = await api.get("/tables");
       setTables(data.data);
     } catch (e) {
       console.error(e);
+      Toast.fire({
+        icon: 'error',
+        title: 'Failed to fetch tables'
+      });
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetch();
-  }, []);
+  }, [fetch]);
 
   const openModal = (table = null) => {
     setSelected(table);

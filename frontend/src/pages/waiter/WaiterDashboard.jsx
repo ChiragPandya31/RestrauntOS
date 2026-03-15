@@ -11,6 +11,15 @@ import {
 import PageHeader from "../../components/common/PageHeader";
 import ThemeToggle from "../../components/common/ThemeToggle";
 import UserDropdown from "../../components/common/UserDropdown";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 const WaiterDashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,7 +33,6 @@ const WaiterDashboard = () => {
   const [notes, setNotes] = useState("");
   const [activeCategory, setActiveCategory] = useState(searchParams.get("category") || "all");
   const [placing, setPlacing] = useState(false);
-  const [notification, setNotification] = useState(null);
   const [currentOrder, setCurrentOrder] = useState(null);
   const { socket } = useSocket();
 
@@ -135,10 +143,10 @@ const WaiterDashboard = () => {
     if (!socket) return;
     socket.on("tableUpdated", () => fetchTables());
     socket.on("orderReady", (order) => {
-      setNotification(
-        `🔔 Order for Table ${order.tableId?.tableNumber} is READY!`,
-      );
-      setTimeout(() => setNotification(null), 5000);
+      Toast.fire({
+        icon: 'success',
+        title: `🔔 Order for Table ${order.tableId?.tableNumber} is READY!`
+      });
       fetchTables();
     });
     socket.on("orderStatusUpdated", () => fetchTables());
@@ -192,10 +200,16 @@ const WaiterDashboard = () => {
       localStorage.removeItem(`notes_${selectedTable._id}`);
       
       setView("tables");
-      setNotification(`✅ Order placed for Table ${selectedTable.tableNumber}`);
-      setTimeout(() => setNotification(null), 3000);
+      Toast.fire({
+        icon: 'success',
+        title: `✅ Order placed for Table ${selectedTable.tableNumber}`
+      });
     } catch (err) {
       console.error(err);
+      Toast.fire({
+        icon: 'error',
+        title: 'Failed to place order'
+      });
     } finally {
       setPlacing(false);
     }
@@ -331,9 +345,21 @@ const WaiterDashboard = () => {
                   return (
                     <div
                       key={item._id}
-                      className={`card cursor-pointer group transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${inCart ? "border-amber-500 ring-1 ring-amber-500/20 bg-amber-50/30 dark:bg-amber-500/5" : "border-gray-200 dark:border-gray-800"}`}
+                      className={`card cursor-pointer group transition-all duration-300 hover:shadow-md hover:-translate-y-1 p-4 ${inCart ? "border-amber-500 ring-1 ring-amber-500/20 bg-amber-50/30 dark:bg-amber-500/5" : "border-gray-200 dark:border-gray-800"}`}
                       onClick={() => addToCart(item)}
                     >
+                      {item.image && (
+                        <div className="w-full h-32 mb-3 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                          <img 
+                            src={item.image} 
+                            alt={item.name} 
+                            loading="lazy" 
+                            width="200"
+                            height="128"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                          />
+                        </div>
+                      )}
                       <p className="font-bold text-gray-900 dark:text-white text-sm leading-tight group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                         {item.name}
                       </p>
@@ -462,12 +488,6 @@ const WaiterDashboard = () => {
             </div>
           }
         />
-
-        {notification && (
-          <div className="fixed top-24 right-6 z-50 bg-white dark:bg-gray-900 border-l-4 border-amber-500 p-4 rounded-xl shadow-2xl animate-fade-in max-w-sm">
-            <p className="text-sm font-bold text-gray-900 dark:text-white">{notification}</p>
-          </div>
-        )}
 
         {loading ? (
           <div className="flex justify-center py-20">
