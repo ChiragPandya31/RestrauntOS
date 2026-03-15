@@ -70,12 +70,20 @@ const OrderHistory = () => {
   }, [fetch]);
 
   const updateStatus = async (orderId, status) => {
+    // Optimistic update
+    const originalOrders = [...orders];
+    setOrders((prev) => prev.map(o => o._id === orderId ? { ...o, status } : o));
     setUpdating(orderId);
+    
     try {
       await api.patch(`/orders/${orderId}/status`, { status });
-      await fetch();
     } catch (e) {
       console.error(e);
+      setOrders(originalOrders);
+      Toast.fire({
+        icon: 'error',
+        title: 'Failed to update order status'
+      });
     } finally {
       setUpdating(null);
     }

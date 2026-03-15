@@ -5,6 +5,7 @@ import { Menu } from 'lucide-react';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -12,6 +13,10 @@ const AdminLayout = () => {
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
+  };
+
+  const toggleExpanded = () => {
+    setIsSidebarExpanded(prev => !prev);
   };
 
   return (
@@ -25,10 +30,10 @@ const AdminLayout = () => {
       )}
 
       {/* Sidebar */}
-      <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+      <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} isExpanded={isSidebarExpanded} toggleExpanded={toggleExpanded} />
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-64 flex flex-col min-h-screen max-w-full overflow-hidden">
+      <main className={`flex-1 flex flex-col min-h-screen max-w-full overflow-hidden transition-all duration-300 ease-in-out ${isSidebarExpanded ? "md:ml-64" : "md:ml-20"}`}>
         {/* Mobile Header */}
         <div className="md:hidden flex items-center p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
           <button 

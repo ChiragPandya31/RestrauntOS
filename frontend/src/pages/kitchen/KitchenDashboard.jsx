@@ -70,6 +70,19 @@ const KitchenDashboard = () => {
   }, [socket, fetchOrders]);
 
   const updateItemStatus = async (orderId, itemIndex, newStatus) => {
+    // Optimistic update
+    const previousOrders = [...orders];
+    setOrders((prev) => 
+      prev.map((o) => {
+        if(o._id === orderId) {
+          const newItems = [...o.items];
+          newItems[itemIndex] = { ...newItems[itemIndex], preparationStatus: newStatus };
+          return { ...o, items: newItems };
+        }
+        return o;
+      })
+    );
+
     const key = `${orderId}-${itemIndex}`;
     setUpdating(key);
     try {
@@ -77,9 +90,10 @@ const KitchenDashboard = () => {
         itemIndex,
         itemStatus: newStatus,
       });
-      await fetchOrders();
+      // Optionally fetchOrders(); omitted for speed
     } catch (e) {
       console.error(e);
+      setOrders(previousOrders);
       Toast.fire({
         icon: 'error',
         title: 'Failed to update status'

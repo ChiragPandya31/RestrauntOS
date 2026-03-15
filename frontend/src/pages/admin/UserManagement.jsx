@@ -86,10 +86,13 @@ const UserManagement = () => {
       confirmButtonText: "Yes, delete user",
     });
     if (!result.isConfirmed) return;
+    const previousUsers = [...users];
+    setUsers((prev) => prev.filter((u) => u._id !== id));
     try {
       await api.delete(`/users/${id}`);
-      await fetchUsers();
+      // fetchUsers() omitted for optimistic speed
     } catch (err) {
+      setUsers(previousUsers);
       Swal.fire({
         title: "Error",
         text: err.response?.data?.message || "Delete failed",

@@ -115,15 +115,36 @@ const MenuItems = () => {
   };
 
   const toggleAvail = async (item) => {
+    // Optimistic update
+    setItems((prev) => 
+      prev.map((i) => 
+        i._id === item._id ? { ...i, availability: !i.availability } : i
+      )
+    );
+
     try {
       await api.put(`/menu/${item._id}`, {
         ...item,
         categoryId: item.categoryId?._id,
         availability: !item.availability,
       });
-      await fetchAll();
+      // Optionally fetchAll() silently, but we assume success
     } catch (e) {
       console.error(e);
+      // Revert if error
+      setItems((prev) => 
+        prev.map((i) => 
+          i._id === item._id ? { ...i, availability: item.availability } : i
+        )
+      );
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        icon: 'error',
+        title: 'Failed to update availability'
+      });
     }
   };
 
