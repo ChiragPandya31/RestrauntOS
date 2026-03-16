@@ -127,7 +127,7 @@ const MenuCategories = () => {
               key={cat._id}
               className="group card bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl p-6"
             >
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-gray-800 flex items-center justify-center text-blue-600 dark:text-gray-500 mb-4 transition-colors group-hover:bg-blue-500/10 group-hover:text-blue-500">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-gray-200 flex items-center justify-center text-blue-600 dark:text-gray-500 mb-4 transition-colors group-hover:bg-blue-500/10 group-hover:text-blue-500">
                 <Utensils size={24} />
               </div>
               <h3 className="text-[20px] font-semibold text-gray-900 dark:text-white transition-colors">
