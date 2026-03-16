@@ -165,7 +165,7 @@ const OrderHistory = () => {
                   <span className={statusBadge(order.status)}>
                     {order.status.replace("_", " ")}
                   </span>
-                  <div className={`p-2 rounded-full transition-colors cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-500/20 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-110 ${expanded === order._id ? "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400" : "bg-blue-100 text-blue-600 dark:bg-gray-800 dark:text-gray-600"}`}>
+                  <div className={`p-2 rounded-full transition-colors cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-500/20 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-110 ${expanded === order._id ? "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400" : "bg-blue-400 text-blue-600 dark:bg-gray-800 dark:text-gray-600"}`}>
                     {expanded === order._id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </div>
