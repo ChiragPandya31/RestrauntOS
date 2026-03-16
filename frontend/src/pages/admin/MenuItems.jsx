@@ -219,7 +219,7 @@ const MenuItems = () => {
                   {[
                     "Item Details",
                     "Category",
-                    "Price ($)",
+                    "Price (₹)",
                     "Status",
                     "Actions",
                   ].map((h) => (
@@ -365,7 +365,7 @@ const MenuItems = () => {
               </div>
               <div>
                 <label className="label text-gray-900 dark:text-gray-400 text-[12px] font-normal">
-                  Unit Price ($)
+                  Unit Price (₹)
                 </label>
                 <input
                   type="number"
