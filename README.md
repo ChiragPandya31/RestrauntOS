@@ -1,4 +1,4 @@
-# RestaurantOS — Full Stack MERN Restaurant Management System
+# RestaurantOS - Full Stack MERN Restaurant Management System
 
 A production-ready restaurant management system built with MongoDB, Express.js, React.js, Node.js, Socket.IO, JWT, and TailwindCSS.
 
