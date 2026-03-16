@@ -201,14 +201,14 @@ const TableManagementAdmin = () => {
               <div className="flex gap-2 transition-all duration-300">
                 <button
                   onClick={() => openModal(table)}
-                  className="flex-1 bg-blue-100 text-blue-600 dark:text-white hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 transition-all rounded-xl text-[12px] py-2 font-medium flex items-center justify-center gap-2"
+                  className="flex-1 bg-blue-100 text-blue-600 dark:text-white hover:bg-blue-600 hover:text-white dark:bg-blue-400 dark:hover:bg-blue-600 transition-all rounded-xl text-[12px] py-2 font-medium flex items-center justify-center gap-2"
                 >
                   <Edit size={14} />
                   
                 </button>
                 <button
                   onClick={() => handleDelete(table._id)}
-                  className="flex-1 bg-red-100 text-red-600 dark:text-white hover:bg-red-600 hover:text-white dark:hover:bg-red-600 transition-all rounded-xl text-[12px] py-2 font-medium flex items-center justify-center gap-2"
+                  className="flex-1 bg-red-100 text-red-600 dark:text-white hover:bg-red-600 hover:text-white dark:bg-red-400 dark:hover:bg-red-600 transition-all rounded-xl text-[12px] py-2 font-medium flex items-center justify-center gap-2"
                 >
                   <Trash size={14} />
                   
