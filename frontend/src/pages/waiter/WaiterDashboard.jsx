@@ -70,13 +70,12 @@ const WaiterDashboard = () => {
     const savedCart = localStorage.getItem(`cart_${table._id}`);
     const savedNotes = localStorage.getItem(`notes_${table._id}`);
     
-    // Set cart and notes BEFORE selectedTable to avoid the persistence effect 
-    // from triggering with empty values and clearing storage.
+  
     setCart(savedCart ? JSON.parse(savedCart) : []);
     setNotes(savedNotes || "");
     setSelectedTable(table);
     
-    // Reset category only if we are explicitly opening a new table (not refreshing)
+   
     if (!isRestoration) {
       setActiveCategory("all");
     }
@@ -107,7 +106,7 @@ const WaiterDashboard = () => {
     setSearchParams(params, { replace: true });
   }, [view, activeCategory, selectedTable, setSearchParams]);
 
-  // Handle initial URL state for table selection
+ 
   useEffect(() => {
     const tableId = searchParams.get("tableId");
     if (tableId && tables.length > 0 && !selectedTable) {
@@ -116,7 +115,7 @@ const WaiterDashboard = () => {
     }
   }, [tables, searchParams, selectedTable, openTable]);
 
-  // Persist cart changes to localStorage
+ 
   useEffect(() => {
     if (selectedTable) {
       if (cart.length > 0) {
@@ -126,8 +125,7 @@ const WaiterDashboard = () => {
       }
     }
   }, [cart, selectedTable]);
-
-  // Persist notes changes to localStorage
+ 
   useEffect(() => {
     if (selectedTable) {
       if (notes) {
@@ -202,7 +200,7 @@ const WaiterDashboard = () => {
       setView("tables");
       Toast.fire({
         icon: 'success',
-        title: `✅ Order placed for Table ${selectedTable.tableNumber}`
+        title: `Order placed for Table ${selectedTable.tableNumber}`
       });
     } catch (err) {
       console.error(err);
@@ -501,7 +499,7 @@ const WaiterDashboard = () => {
                 onClick={() => openTable(table)}
                 className={`relative p-6 rounded-3xl border-2 text-left transition-all duration-300 hover:scale-[1.03] active:scale-95 shadow-sm group ${statusColor[table.status]}`}
               >
-                {/* Ready indicator */}
+              
                 {table.currentOrderId?.status === "ready" && (
                   <span className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 border-4 border-white dark:border-gray-950 rounded-full flex items-center justify-center text-white text-[10px] font-bold animate-bounce shadow-lg">
                     !
