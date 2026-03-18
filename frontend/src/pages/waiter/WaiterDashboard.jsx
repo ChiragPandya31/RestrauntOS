@@ -145,7 +145,7 @@ const WaiterDashboard = () => {
     socket.on("orderReady", (order) => {
       Toast.fire({
         icon: 'success',
-        title: `🔔 Order for Table ${order.tableId?.tableNumber} is READY!`
+        title: `Order for Table ${order.tableId?.tableNumber} is READY!`
       });
       fetchTables();
     });
