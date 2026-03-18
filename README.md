@@ -3,39 +3,7 @@
 A production-ready restaurant management system built with MongoDB, Express.js, React.js, Node.js, Socket.IO, JWT, and TailwindCSS.
 
 ---
-
-## System Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        CLIENT LAYER                             │
-│  React.js + TailwindCSS + Socket.IO Client + Axios             │
-│  ┌──────────┐  ┌───────────────┐  ┌──────────────────┐        │
-│  │  Admin   │  │    Waiter     │  │    Kitchen       │        │
-│  │Dashboard │  │  Dashboard   │  │   Dashboard      │        │
-│  └──────────┘  └───────────────┘  └──────────────────┘        │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │ HTTP/WebSocket
-┌──────────────────────────▼──────────────────────────────────────┐
-│                       SERVER LAYER                              │
-│  Node.js + Express.js + Socket.IO Server                       │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                   REST API Routes                         │  │
-│  │  /auth  /users  /categories  /menu  /tables  /orders     │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│  ┌────────────────┐  ┌────────────────┐  ┌──────────────────┐  │
-│  │   JWT Auth     │  │ Role-Based ACL │  │  Error Handler   │  │
-│  └────────────────┘  └────────────────┘  └──────────────────┘  │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────────────┐
-│                     DATABASE LAYER                              │
-│  MongoDB + Mongoose ODM                                        │
-│  Users │ MenuCategories │ MenuItems │ Tables │ Orders          │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-
+ 
 
 
 ## Complete Order Workflow
